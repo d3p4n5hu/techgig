@@ -1,26 +1,58 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
-function App() {
+export default function App() {
+  const [auth, setAuth] = useState(true);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <CssBaseline />
+
+      <Router>
+        <Switch>
+          <Route
+            path="/home"
+            render={({ location }) =>
+              auth ? (
+                <Home setAuth={setAuth} />
+              ) : (
+                <Redirect
+                  to={{
+                    pathname: "/",
+                    state: { from: location },
+                  }}
+                />
+              )
+            }
+          />
+          <Route
+            path="/"
+            render={({ location }) =>
+              !auth ? (
+                <Login setAuth={setAuth} />
+              ) : (
+                <Redirect
+                  to={{
+                    pathname: "/home",
+                    state: { from: location },
+                  }}
+                />
+              )
+            }
+          />
+          <Route path="*">
+            <Login setAuth={setAuth} />
+          </Route>
+        </Switch>
+      </Router>
+    </>
   );
 }
-
-export default App;
