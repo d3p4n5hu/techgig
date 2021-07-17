@@ -10,7 +10,7 @@ import Login from "./pages/Login";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 export default function App() {
-  const [auth, setAuth] = useState(true);
+  const [auth, setAuth] = useState(false);
 
   return (
     <>
